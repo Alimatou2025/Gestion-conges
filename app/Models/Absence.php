@@ -2,29 +2,41 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Absence extends Model
 {
-   protected $fillable = [
+    use HasFactory;
+
+    protected $fillable = [
         'agent_id',
         'nombre_jours',
         'date_debut',
         'date_fin',
         'motif',
-        'deductible',
-        'commentaire',
+        'statut',
+        'deductible',   // Ajouté pour correspondre à votre vue
+        'commentaire',  // Ajouté pour correspondre à votre vue
     ];
 
-    protected $casts = [
-        'date_debut' => 'date',
-        'date_fin' => 'date',
-        'deductible' => 'boolean',
-    ];
+    /**
+     * Transtypage des attributs.
+     * Cela permet d'utiliser ->format('d/m/Y') directement dans Blade sans erreur !
+     */
+    protected function casts(): array
+    {
+        return [
+            'date_debut' => 'date',
+            'date_fin' => 'date',
+        ];
+    }
 
-    // Une absence appartient à un agent
+    /**
+     * Relation avec l'Agent
+     */
     public function agent()
     {
-        return $this->belongsTo(Agent::class);
+        return $this->belongsTo(Agent::class, 'agent_id');
     }
 }

@@ -1,63 +1,50 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Gestion Congés</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white text-center py-3">
-                        <h4><i class="bi bi-calendar-check"></i> Gestion Congés</h4>
-                        <p class="mb-0">Connectez-vous à votre compte</p>
-                    </div>
-                    <div class="card-body p-4">
-                        @if($errors->any())
-                            <div class="alert alert-danger">
-                                {{ $errors->first() }}
-                            </div>
-                        @endif
+@extends('layouts.app')
 
-                        @if(session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+@section('title', 'Connexion - Gestion Congés')
 
-                        <form action="/login" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ old('email') }}" placeholder="votre@email.com">
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Mot de passe</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="password" class="form-control"
-                                        placeholder="••••••••">
-                                </div>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-box-arrow-in-right"></i> Se connecter
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+@section('content')
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-4">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="font-weight-light my-1">Connexion</h3>
+                    <p class="mb-0 small">Accédez à votre espace</p>
+                </div>
+                <div class="card-body p-4">
+                    @if(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    <form action="{{ url('/login') }}" method="POST">
+                        @csrf
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="email">Adresse Email</label>
+                            <input class="form-control py-2 @error('email') is-invalid @enderror" id="email" name="email" type="email" placeholder="nom@exemple.com" value="{{ old('email') }}" required />
+                            @error('email')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="small mb-1 font-weight-bold text-muted" for="password">Mot de passe</label>
+                            <input class="form-control py-2 @error('password') is-invalid @enderror" id="password" name="password" type="password" placeholder="••••••••" required />
+                            @error('password')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light border-0">
+                    <div class="small"><a href="{{ route('register') }}">Pas encore de compte ? Inscrivez-vous</a></div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+@endsection

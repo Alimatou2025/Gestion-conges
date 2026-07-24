@@ -31,20 +31,17 @@ class AgentController extends Controller
             'date_prise_service' => 'required|date',
         ]);
 
-        // Calcul automatique des jours de congés dus
         $datePrise = Carbon::parse($request->date_prise_service);
         $aujourdhui = Carbon::now();
         $moisTravailles = $datePrise->diffInMonths($aujourdhui);
 
-        // 2 jours par mois, minimum 12 mois pour avoir droit aux congés
         if ($moisTravailles >= 12) {
-            $joursConges = 24; // 24 jours de base
-            $joursConges += $request->nombre_enfants; // +1 jour par enfant
+            $joursConges = 24;
+            $joursConges += $request->nombre_enfants;
         } else {
             $joursConges = min($moisTravailles * 2, 24);
         }
 
-        // Maximum 72 jours
         $joursConges = min($joursConges, 72);
 
         Agent::create([
@@ -59,7 +56,7 @@ class AgentController extends Controller
             'jours_reportes' => 0,
         ]);
 
-        return redirect()->route('agents.index')
+        return redirect()->route('admin.agents.index')
             ->with('success', 'Agent ajouté avec succès ! Jours de congés calculés : ' . $joursConges);
     }
 
@@ -88,14 +85,14 @@ class AgentController extends Controller
 
         $agent->update($request->all());
 
-        return redirect()->route('agents.index')
+        return redirect()->route('admin.agents.index')
             ->with('success', 'Agent modifié avec succès !');
     }
 
     public function destroy(Agent $agent)
     {
         $agent->delete();
-        return redirect()->route('agents.index')
+        return redirect()->route('admin.agents.index')
             ->with('success', 'Agent supprimé avec succès !');
     }
 }

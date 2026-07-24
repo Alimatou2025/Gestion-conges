@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'agent_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -32,5 +32,16 @@ class User extends Authenticatable
     public function isGestionnaire()
     {
         return $this->role === 'gestionnaire';
+    }
+
+    public function isEmployee()
+    {
+        return $this->role === 'agent';
+    }
+
+    // Lien vers la fiche Agent (matricule, jours dus, etc.)
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
     }
 }

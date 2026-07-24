@@ -48,18 +48,12 @@
                 <td>{{ ucfirst($absence->motif) }}</td>
             </tr>
             <tr>
-                <th>Statut</th>
+                <th>Déductible</th>
                 <td>
-                    <span class="badge
-                        {{ $absence->statut == 'approuve' ? 'bg-success' :
-                           ($absence->statut == 'refuse' ? 'bg-danger' : 'bg-warning') }}">
-                        {{ ucfirst($absence->statut) }}
+                    <span class="badge {{ $absence->deductible ? 'bg-danger' : 'bg-success' }}">
+                        {{ $absence->deductible ? 'Oui' : 'Non' }}
                     </span>
                 </td>
-            </tr>
-            <tr>
-                <th>Déductible</th>
-                <td>{{ $absence->deductible ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>Commentaire</th>

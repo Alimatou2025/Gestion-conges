@@ -1,83 +1,93 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un utilisateur - Gestion Congés</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white text-center py-3">
-                        <h4><i class="bi bi-person-plus"></i> Créer un utilisateur</h4>
-                    </div>
-                    <div class="card-body p-4">
-                        @if($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+@extends('layouts.app')
 
-                        <form action="/register" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="form-label">Nom complet</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" name="name" class="form-control"
-                                        value="{{ old('name') }}" placeholder="Nom complet">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ old('email') }}" placeholder="votre@email.com">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Mot de passe</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="password" class="form-control"
-                                        placeholder="••••••••">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Confirmer le mot de passe</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                    <input type="password" name="password_confirmation" class="form-control"
-                                        placeholder="••••••••">
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Rôle</label>
-                                <select name="role" class="form-select">
-                                    <option value="gestionnaire">Gestionnaire</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save"></i> Créer l'utilisateur
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+@section('title', 'Inscription - Gestion Congés')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg mt-4">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h3 class="font-weight-light my-1">Créer un compte</h3>
+                    <p class="mb-0 small">Enregistrez-vous en tant qu'agent</p>
+                </div>
+                <div class="card-body p-4">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ url('/register') }}" method="POST">
+                        @csrf
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="name">Nom complet</label>
+                            <input class="form-control py-2 @error('name') is-invalid @enderror" id="name" name="name" type="text" placeholder="Ex: Alimatou Dieme" value="{{ old('name') }}" required />
+                            @error('name')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="email">Adresse Email</label>
+                            <input class="form-control py-2 @error('email') is-invalid @enderror" id="email" name="email" type="email" placeholder="nom@exemple.com" value="{{ old('email') }}" required />
+                            @error('email')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="matricule_solde">Matricule de solde</label>
+                            <input class="form-control py-2 @error('matricule_solde') is-invalid @enderror" id="matricule_solde" name="matricule_solde" type="text" placeholder="Ex: 6543T" value="{{ old('matricule_solde') }}" required />
+                            @error('matricule_solde')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="lieu_affectation">Lieu d'affectation</label>
+                            <input class="form-control py-2 @error('lieu_affectation') is-invalid @enderror" id="lieu_affectation" name="lieu_affectation" type="text" placeholder="Ex: Rectorat" value="{{ old('lieu_affectation') }}" required />
+                            @error('lieu_affectation')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="date_prise_service">Date de prise de service</label>
+                            <input class="form-control py-2 @error('date_prise_service') is-invalid @enderror" id="date_prise_service" name="date_prise_service" type="date" value="{{ old('date_prise_service') }}" required />
+                            @error('date_prise_service')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="small mb-1 font-weight-bold text-muted" for="password">Mot de passe</label>
+                            <input class="form-control py-2 @error('password') is-invalid @enderror" id="password" name="password" type="password" placeholder="Minimum 6 caractères" required />
+                            @error('password')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="small mb-1 font-weight-bold text-muted" for="password_confirmation">Confirmer le mot de passe</label>
+                            <input class="form-control py-2" id="password_confirmation" name="password_confirmation" type="password" placeholder="••••••••" required />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-block">Créer le compte</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light border-0">
+                    <div class="small"><a href="{{ route('login') }}">Déjà un compte ? Connectez-vous</a></div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+@endsection
